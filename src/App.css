@@ -7,5 +7,10 @@ ol {
 }
 
 .out-put {
+  padding: 1rem;
+  background-color: aliceblue;
   flex: 1;
+}
+
+.input {
 }

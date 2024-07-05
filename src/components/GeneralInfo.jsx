@@ -26,24 +26,17 @@ function GeneralInfo() {
   const [savedGradDate, setSavedGradDate] = useState("");
 
   //Experience variables:
+  const [jobs, setJobs] = useState([]);
+
   const [companyName, setCompanyName] = useState("");
-  const [savedCompanyName, setSavedCompanyName] = useState("");
 
   const [jobTitle, setJobTitle] = useState("");
-  const [savedJobTitle, setSavedJobTitle] = useState("");
 
   const [jobDescription, setJobDescription] = useState("");
-  const [savedJobDescription, setSavedJobDescription] = useState("");
 
   const [startDate, setStartDate] = useState("");
-  const [savedStartDate, setSavedStartDate] = useState("");
 
   const [endDate, setEndDate] = useState("");
-  const [savedEndDate, setSavedEndDate] = useState("");
-
-  // function addGeneralInfo() {}
-
-  // function editGeneralInfo() {}
 
   function handleNameChange(event) {
     setName(event.target.value);
@@ -52,11 +45,8 @@ function GeneralInfo() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setSavedName(name);
-    //setName("");
     setSavedPhoneNumber(phoneNumber);
-    //setPhoneNumber("");
     setSavedEmail(email);
-    //setEmail("");
   };
 
   const handleEducationSubmit = (event) => {
@@ -89,11 +79,15 @@ function GeneralInfo() {
 
   const handleExperienceSubmit = (event) => {
     event.preventDefault();
-    setSavedCompanyName(companyName);
-    setSavedJobTitle(jobTitle);
-    setSavedJobDescription(jobDescription);
-    setSavedStartDate(startDate);
-    setSavedEndDate(endDate);
+    const newExperience = {
+      business: companyName,
+      title: jobTitle,
+      description: jobDescription,
+      start: startDate,
+      end: endDate,
+    };
+
+    setJobs((j) => [...j, newExperience]);
   };
 
   function handleCompanyNameChange(event) {
@@ -112,9 +106,16 @@ function GeneralInfo() {
     setEndDate(event.target.value);
   }
 
+  function deleteJob(index) {
+    const updatedJobs = jobs.filter((_, i) => i !== index);
+    setJobs(updatedJobs);
+  }
+
+  function editJob(index) {}
+
   return (
     <div className="container">
-      <div>
+      <div className="input">
         <h1>General Information</h1>
         <ol>
           <li>
@@ -177,11 +178,8 @@ function GeneralInfo() {
         schoolName={savedSchoolName}
         major={savedMajor}
         gradDate={savedGradDate}
-        companyName={savedCompanyName}
-        jobTitle={savedJobTitle}
-        jobDescription={savedJobDescription}
-        startDate={savedStartDate}
-        endDate={savedEndDate}
+        deleteJob={deleteJob}
+        jobs={jobs}
       />
     </div>
   );
