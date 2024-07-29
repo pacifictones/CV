@@ -1,9 +1,9 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import Experience from "./Experience";
 
-function Display(props) {
+const Display = forwardRef((props, ref) => {
   return (
-    <div className="out-put">
+    <div ref={ref} className="out-put">
       <div className="gen-info">
         <p>Name: {props.name}</p>
         <p>Email: {props.email}</p>
@@ -25,26 +25,21 @@ function Display(props) {
               <p>Job Description: {job.description}</p>
               <p>Start Date: {job.start}</p>
               <p>End Date: {job.end}</p>
-              <button>edit</button>
+              <button onClick={() => props.editJob(index)}>Edit</button>
               <button
                 className="delete-button"
                 onClick={() => {
                   props.deleteJob(index);
                 }}
               >
-                delete
+                Delete
               </button>
             </li>
           ))}
         </ul>
-        {/* <p>Company Name: {props.companyName}</p>
-        <p>Job Title: {props.jobTitle}</p>
-        <p>Job Description: {props.jobDescription}</p>
-        <p>From: {props.startDate}</p>
-        <p>To: {props.endDate}</p> */}
       </div>
     </div>
   );
-}
+});
 
 export default Display;

@@ -2,6 +2,7 @@ import { useState, useTransition } from "react";
 import Display from "./Display";
 import Education from "./Education";
 import Experience from "./Experience";
+import html2canvas from "html2canvas";
 
 function GeneralInfo() {
   // eslint-disable-next-line no-unused-vars
@@ -27,16 +28,12 @@ function GeneralInfo() {
 
   //Experience variables:
   const [jobs, setJobs] = useState([]);
-
   const [companyName, setCompanyName] = useState("");
-
   const [jobTitle, setJobTitle] = useState("");
-
   const [jobDescription, setJobDescription] = useState("");
-
   const [startDate, setStartDate] = useState("");
-
   const [endDate, setEndDate] = useState("");
+  const [editingIndex, setEditingIndex] = useState(null);
 
   function handleNameChange(event) {
     setName(event.target.value);
@@ -87,7 +84,20 @@ function GeneralInfo() {
       end: endDate,
     };
 
-    setJobs((j) => [...j, newExperience]);
+    if (editingIndex !== null) {
+      setJobs((j) =>
+        j.map((job, index) => (index === editingIndex ? newExperience : job))
+      );
+      setEditingIndex(null);
+    } else {
+      setJobs((j) => [...j, newExperience]);
+    }
+
+    setCompanyName("");
+    setJobTitle("");
+    setJobDescription("");
+    setStartDate("");
+    setEndDate("");
   };
 
   function handleCompanyNameChange(event) {
@@ -111,7 +121,25 @@ function GeneralInfo() {
     setJobs(updatedJobs);
   }
 
-  function editJob(index) {}
+  function editJob(index) {
+    const job = jobs[index];
+    setCompanyName(job.business);
+    setJobTitle(job.title);
+    setJobDescription(job.description);
+    setStartDate(job.start);
+    setEndDate(job.end);
+    setEditingIndex(index);
+  }
+
+  const generatePDF = () => {
+    const input = displayRef.current;
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, "PNG", 0, 0);
+      pdf.save("cv.pdf");
+    });
+  };
 
   return (
     <div className="container">
@@ -179,8 +207,10 @@ function GeneralInfo() {
         major={savedMajor}
         gradDate={savedGradDate}
         deleteJob={deleteJob}
+        editJob={editJob}
         jobs={jobs}
       />
+      <button onClick={generatePDF}>Generate PDF</button>
     </div>
   );
 }
