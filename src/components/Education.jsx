@@ -34,7 +34,7 @@ function Education(props) {
           className="submit-education-info"
           onClick={props.handleEducationSubmit}
         >
-          Submit
+          {props.editingSchool !== null ? "Update" : "Add"}
         </button>
       </ol>
     </div>

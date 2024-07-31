@@ -15,18 +15,15 @@ function GeneralInfo() {
   const [phoneNumber, setPhoneNumber] = useState();
   const [savedPhoneNumber, setSavedPhoneNumber] = useState("");
 
-  //Educations Variables:
+  //Education State:
 
+  const [schools, setSchools] = useState([]);
   const [schoolName, setSchoolName] = useState("");
-  const [savedSchoolName, setSavedSchoolName] = useState("");
-
   const [major, setMajor] = useState("");
-  const [savedMajor, setSavedMajor] = useState("");
-
   const [gradDate, setGradDate] = useState("");
-  const [savedGradDate, setSavedGradDate] = useState("");
+  const [editingSchool, setEditingSchool] = useState(null);
 
-  //Experience variables:
+  //Experience State:
   const [jobs, setJobs] = useState([]);
   const [companyName, setCompanyName] = useState("");
   const [jobTitle, setJobTitle] = useState("");
@@ -46,11 +43,34 @@ function GeneralInfo() {
     setSavedEmail(email);
   };
 
+  // Education Handlers
   const handleEducationSubmit = (event) => {
     event.preventDefault();
-    setSavedSchoolName(schoolName);
-    setSavedGradDate(gradDate);
-    setSavedMajor(major);
+    const newSchool = { schoolName, major, gradDate };
+    if (editingSchool != null) {
+      const updatedSchools = schools.map((school, index) =>
+        index === editingSchool ? newSchool : school
+      );
+      setSchools(updatedSchools);
+      setEditingSchool(null);
+    } else {
+      setSchools((prevSchools) => [...prevSchools, newSchool]);
+    }
+    setSchoolName("");
+    setMajor("");
+    setGradDate("");
+  };
+
+  const handleEditSchool = (index) => {
+    const school = schools[index];
+    setSchoolName(school.schoolName);
+    setMajor(school.major);
+    setGradDate(school.gradDate);
+    setEditingSchool(index);
+  };
+
+  const handleDeleteSchool = (index) => {
+    setSchools(schools.filter((_, i) => i !== index));
   };
 
   function handleEmailChange(event) {
@@ -60,17 +80,17 @@ function GeneralInfo() {
     setPhoneNumber(event.target.value);
   }
 
-  function handleSchoolNameChange(event) {
-    setSchoolName(event.target.value);
-  }
+  // function handleSchoolNameChange(event) {
+  //   setSchoolName(event.target.value);
+  // }
 
-  function handleGradDateChange(event) {
-    setGradDate(event.target.value);
-  }
+  // function handleGradDateChange(event) {
+  //   setGradDate(event.target.value);
+  // }
 
-  function handleMajorChange(event) {
-    setMajor(event.target.value);
-  }
+  // function handleMajorChange(event) {
+  //   setMajor(event.target.value);
+  // }
 
   //functions for Experience:
 
@@ -131,15 +151,15 @@ function GeneralInfo() {
     setEditingIndex(index);
   }
 
-  const generatePDF = () => {
-    const input = displayRef.current;
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, "PNG", 0, 0);
-      pdf.save("cv.pdf");
-    });
-  };
+  // const generatePDF = () => {
+  //   const input = displayRef.current;
+  //   html2canvas(input).then((canvas) => {
+  //     const imgData = canvas.toDataURL("image/png");
+  //     const pdf = new jsPDF();
+  //     pdf.addImage(imgData, "PNG", 0, 0);
+  //     pdf.save("cv.pdf");
+  //   });
+  // };
 
   return (
     <div className="container">
@@ -171,7 +191,7 @@ function GeneralInfo() {
             />
           </li>
           <button className="submit-general-info" onClick={handleSubmit}>
-            Submit
+            Update
           </button>
         </ol>
 
@@ -179,9 +199,9 @@ function GeneralInfo() {
           schoolName={schoolName}
           gradDate={gradDate}
           major={major}
-          handleSchoolNameChange={handleSchoolNameChange}
-          handleGradDateChange={handleGradDateChange}
-          handleMajorChange={handleMajorChange}
+          handleSchoolNameChange={(e) => setSchoolName(e.target.value)}
+          handleGradDateChange={(e) => setGradDate(e.target.value)}
+          handleMajorChange={(e) => setMajor(e.target.value)}
           handleEducationSubmit={handleEducationSubmit}
         />
 
@@ -203,14 +223,14 @@ function GeneralInfo() {
         name={savedName}
         email={savedEmail}
         number={savedPhoneNumber}
-        schoolName={savedSchoolName}
-        major={savedMajor}
-        gradDate={savedGradDate}
+        schools={schools}
+        handleEditSchool={handleEditSchool}
+        handleDeleteSchool={handleDeleteSchool}
         deleteJob={deleteJob}
         editJob={editJob}
         jobs={jobs}
       />
-      <button onClick={generatePDF}>Generate PDF</button>
+      {/* <button onClick={generatePDF}>Generate PDF</button> */}
     </div>
   );
 }

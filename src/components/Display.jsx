@@ -1,9 +1,9 @@
 import React, { forwardRef } from "react";
 import Experience from "./Experience";
 
-const Display = forwardRef((props, ref) => {
+function Display(props) {
   return (
-    <div ref={ref} className="out-put">
+    <div className="out-put">
       <div className="gen-info">
         <p>Name: {props.name}</p>
         <p>Email: {props.email}</p>
@@ -11,12 +11,26 @@ const Display = forwardRef((props, ref) => {
       </div>
       <hr />
       <div className="education">
-        <p>School: {props.schoolName}</p>
-        <p>Major: {props.major}</p>
-        <p>Date: {props.gradDate}</p>
+        <h2>Education</h2>
+        <ul>
+          {props.schools.map((school, index) => (
+            <li key={index}>
+              <p>School: {school.schoolName}</p>
+              <p>Major: {school.major}</p>
+              <p>Graduation Date: {school.gradDate}</p>
+              <button onClick={() => props.handleEditSchool(index)}>
+                Edit
+              </button>
+              <button onClick={() => props.handleDeleteSchool(index)}>
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
       <hr />
       <div className="experience">
+        <h2>Experience</h2>
         <ul>
           {props.jobs.map((job, index) => (
             <li key={index}>
@@ -26,20 +40,13 @@ const Display = forwardRef((props, ref) => {
               <p>Start Date: {job.start}</p>
               <p>End Date: {job.end}</p>
               <button onClick={() => props.editJob(index)}>Edit</button>
-              <button
-                className="delete-button"
-                onClick={() => {
-                  props.deleteJob(index);
-                }}
-              >
-                Delete
-              </button>
+              <button onClick={() => props.deleteJob(index)}>Delete</button>
             </li>
           ))}
         </ul>
       </div>
     </div>
   );
-});
+}
 
 export default Display;

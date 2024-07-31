@@ -1,5 +1,38 @@
-ol {
+body {
+  margin: auto;
+  max-width: 80%;
+  background-color: rgb(0, 0%, 10%);
+}
+
+.input {
+  margin-right: 40px;
+}
+
+input,
+textarea {
+  width: 100%;
+  margin-right: 10px;
+  font-size: 1rem;
+  padding: 5px;
+  border: 2px solid hsla(0, 0%, 80%, 0.5);
+  border-radius: 5px;
+  color: hsla(0, 0%, 0%, 0.5);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  margin: 0;
+  color: rgb(14, 83, 95);
+}
+
+.input ol {
+  padding: 0;
   list-style: none;
+}
+
+.input li {
+  font-size: 2rem;
+  padding: 1px;
 }
 
 .container {
@@ -7,10 +40,20 @@ ol {
 }
 
 .out-put {
-  padding: 1rem;
+  padding: 2rem;
   background-color: aliceblue;
   flex: 1;
 }
 
-.input {
+.input button {
+  font-size: 1rem;
+  padding: 5px 10px;
+  font-weight: bold;
+  margin-top: 1rem;
+  border-radius: 5px;
+}
+
+.responsibilityBox {
+  height: 80px;
+  color: blue;
 }

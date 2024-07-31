@@ -22,7 +22,8 @@ function Experience(props) {
           />
         </li>
         <li>
-          <input
+          <textarea
+            className="responsibilityBox"
             type="text"
             placeholder="Responsibility..."
             value={props.jobDescription}
@@ -49,7 +50,7 @@ function Experience(props) {
           className="submit-education-info"
           onClick={props.handleExperienceSubmit}
         >
-          Submit
+          Update
         </button>
       </ol>
     </div>
